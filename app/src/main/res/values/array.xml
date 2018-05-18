@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- menu -->
+    <string-array name="MenuList">
+        <item>@string/menu_settings</item>
+        <item>@string/menu_reset</item>
+        <item>@string/menu_import</item>
+        <item>@string/menu_export</item>
+        <item>@string/menu_about</item>
+    </string-array>
+    <integer-array name="MenuConfigList">
+        <item>@integer/menu_default_config_settings</item>
+        <item>@integer/menu_default_config_rest</item>
+        <item>@integer/menu_default_config_import</item>
+        <item>@integer/menu_default_config_export</item>
+        <item>@integer/menu_default_config_about</item>
+    </integer-array>
+
+</resources>

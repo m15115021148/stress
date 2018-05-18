@@ -14,9 +14,11 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Window;
 
+import com.meigsmart.slb767_stress.R;
 import com.meigsmart.slb767_stress.application.MyApplication;
 import com.meigsmart.slb767_stress.db.FunctionBean;
 import com.meigsmart.slb767_stress.model.TypeModel;
+import com.meigsmart.slb767_stress.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(getLayoutId());
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
         acquireWakeLock();
         // 注册广播
         receiver = new MyBroaderEsc();
@@ -64,6 +66,21 @@ public abstract class BaseActivity extends AppCompatActivity {
                 finish();
             }
         }
+    }
+
+    protected List<TypeModel> getData(String[] array, int[] ids, Class[] cls){
+        List<TypeModel> list = new ArrayList<>();
+        for (int i=0;i<array.length;i++){
+            if (ids[i] == 1){
+                TypeModel model = new TypeModel();
+                model.setId(i);
+                model.setName(array[i]);
+                model.setCls(cls[i]);
+                model.setType(0);
+                list.add(model);
+            }
+        }
+        return list;
     }
 
     protected List<TypeModel> getData(String[] array, int[] ids, Class[] cls,List<FunctionBean> f){
@@ -92,7 +109,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void startActivity(TypeModel model){
         if (model.getCls().equals(Class.class)){
-//            ToastUtil.showBottomShort(getResources().getString(R.string.to_be_developed));
+            ToastUtil.showBottomShort(getResources().getString(R.string.to_be_developed));
             return;
         }
         if (model.getCls() != null){

@@ -19,6 +19,7 @@
             android:textSize="@dimen/fontSize" />
 
         <LinearLayout
+            android:id="@+id/menu"
             android:layout_width="@dimen/include_width"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
