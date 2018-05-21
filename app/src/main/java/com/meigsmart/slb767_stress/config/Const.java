@@ -1,5 +1,7 @@
 package com.meigsmart.slb767_stress.config;
 
+import com.meigsmart.slb767_stress.ui.DetectionActivity;
+import com.meigsmart.slb767_stress.ui.FunctionActivity;
 import com.meigsmart.slb767_stress.ui.HardwareActivity;
 import com.meigsmart.slb767_stress.ui.LogActivity;
 import com.meigsmart.slb767_stress.ui.SettingsActivity;
@@ -26,6 +28,11 @@ public class Const {
             TestLoopActivity.class,
             HardwareActivity.class,
             LogActivity.class
+    };
+
+    public static Class[] hardwareList = {
+            DetectionActivity.class,
+            FunctionActivity.class
     };
 
 }

@@ -62,4 +62,10 @@
         <item>@string/loop_action_suspend_time</item>
     </string-array>
 
+    <!--Hardware-->
+    <string-array name="HardwareList">
+        <item>@string/hardware_detection</item>
+        <item>@string/hardware_function</item>
+    </string-array>
+
 </resources>

@@ -11,19 +11,21 @@ import com.meigsmart.slb767_stress.config.Const;
 import butterknife.BindArray;
 import butterknife.BindView;
 
-public class HardwareActivity extends BaseActivity implements CustomAdapter.onCustomItemListener{
-    private HardwareActivity mContext;
+public class FunctionActivity extends BaseActivity implements CustomAdapter.onCustomItemListener{
+    private FunctionActivity mContext;
     @BindView(R.id.title)
     public TextView mTitle;
     @BindView(R.id.recyclerView)
     public RecyclerView mRecyclerView;
     private CustomAdapter mAdapter;
-    @BindArray(R.array.HardwareList)
-    public String[] mHardwareList;
+    @BindArray(R.array.MainList)
+    public String[] mMainList;
+    @BindArray(R.array.MainConfigList)
+    public int[] mMainConfigList;
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_hardware;
+        return R.layout.activity_function;
     }
 
     @Override
@@ -36,11 +38,11 @@ public class HardwareActivity extends BaseActivity implements CustomAdapter.onCu
         mAdapter = new CustomAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
 
-        mAdapter.setData(getData(mHardwareList, Const.hardwareList));
+        mAdapter.setData(getData(mMainList,mMainConfigList,null));
     }
 
     @Override
     public void onCustomItemClick(int position) {
-        startActivity(mAdapter.getData().get(position));
+
     }
 }

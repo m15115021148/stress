@@ -25,7 +25,9 @@
         <activity android:name=".ui.SettingsActivity" />
         <activity android:name=".ui.TestLoopActivity" />
         <activity android:name=".ui.HardwareActivity" />
-        <activity android:name=".ui.LogActivity"></activity>
+        <activity android:name=".ui.LogActivity" />
+        <activity android:name=".ui.FunctionActivity" />
+        <activity android:name=".ui.DetectionActivity"></activity>
     </application>
 
 </manifest>

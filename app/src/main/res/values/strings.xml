@@ -47,4 +47,8 @@
     <string name="loop_action_name">LOOP ACTION</string>
     <string name="loop_action_suspend_time">Suspend time</string>
 
+    <!--Hardware-->
+    <string name="hardware_detection">Detection</string>
+    <string name="hardware_function">Function</string>
+
 </resources>
