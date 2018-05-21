@@ -7,4 +7,11 @@
     <integer name="menu_default_config_export">1</integer>
     <integer name="menu_default_config_about">1</integer>
 
+    <integer name="main_default_config_network">1</integer>
+    <integer name="main_default_config_bluetooth">1</integer>
+    <integer name="main_default_config_nfc">1</integer>
+    <integer name="main_default_config_reader">1</integer>
+    <integer name="main_default_config_vibrator">1</integer>
+    <integer name="main_default_config_camera">1</integer>
+
 </resources>

@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">Stress Test</string>
+    <string name="app_test_number">Stress Test(%1$d)</string>
     <string name="to_be_developed">To be developed</string>
+
+    <string name="loop_action">Loop Action:</string>
+    <string name="close">Close</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="test_will_tag">Test will start in %1$d secs</string>
+    <string name="action_will_tag">Action will execute in %1$d secs</string>
 
     <!--Menu-->
     <string name="menu_settings">Settings</string>
@@ -8,5 +16,18 @@
     <string name="menu_import">Import</string>
     <string name="menu_export">Export</string>
     <string name="menu_about">About</string>
+
+    <!--Loop Action-->
+    <string name="loop_action_suspend">Suspend/Resume</string>
+    <string name="loop_action_reboot">Reboot</string>
+    <string name="loop_action_continuous">Continuous</string>
+
+    <!--Main-->
+    <string name="main_network">Network</string>
+    <string name="main_bluetooth">Bluetooth</string>
+    <string name="main_nfc">NFC</string>
+    <string name="main_reader">Reader</string>
+    <string name="main_vibrator">Vibrator</string>
+    <string name="main_camera">Camera</string>
 
 </resources>

@@ -75,8 +75,9 @@ public abstract class BaseActivity extends AppCompatActivity {
                 TypeModel model = new TypeModel();
                 model.setId(i);
                 model.setName(array[i]);
-                model.setCls(cls[i]);
+                if (cls!=null)model.setCls(cls[i]);
                 model.setType(0);
+                model.setItemType(0);
                 list.add(model);
             }
         }

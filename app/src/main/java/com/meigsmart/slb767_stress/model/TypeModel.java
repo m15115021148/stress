@@ -8,6 +8,15 @@ public class TypeModel {
     private String name;
     private int type;//0 unselected ; 1 pass ; 2 failure
     private Class cls;
+    private int itemType; //0 normal ;  1 select
+
+    public int getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(int itemType) {
+        this.itemType = itemType;
+    }
 
     public int getId() {
         return id;

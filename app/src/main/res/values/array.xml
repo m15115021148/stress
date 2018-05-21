@@ -17,4 +17,29 @@
         <item>@integer/menu_default_config_about</item>
     </integer-array>
 
+    <!--Loop Action-->
+    <string-array name="LoopActionList">
+        <item>@string/loop_action_suspend</item>
+        <item>@string/loop_action_reboot</item>
+        <item>@string/loop_action_continuous</item>
+    </string-array>
+
+    <!--Main-->
+    <string-array name="MainList">
+        <item>@string/main_network</item>
+        <item>@string/main_bluetooth</item>
+        <item>@string/main_nfc</item>
+        <item>@string/main_reader</item>
+        <item>@string/main_vibrator</item>
+        <item>@string/main_camera</item>
+    </string-array>
+    <integer-array name="MainConfigList">
+        <item>@integer/main_default_config_network</item>
+        <item>@integer/main_default_config_bluetooth</item>
+        <item>@integer/main_default_config_nfc</item>
+        <item>@integer/main_default_config_reader</item>
+        <item>@integer/main_default_config_vibrator</item>
+        <item>@integer/main_default_config_camera</item>
+    </integer-array>
+
 </resources>
