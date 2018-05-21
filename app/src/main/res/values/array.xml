@@ -42,4 +42,24 @@
         <item>@integer/main_default_config_camera</item>
     </integer-array>
 
+    <!--Settings-->
+    <string-array name="SettingsList">
+        <item>@string/settings_loop</item>
+        <item>@string/settings_hardware</item>
+        <item>@string/settings_log</item>
+    </string-array>
+
+    <!--loop-->
+    <string-array name="LoopGroupList">
+        <item>@string/loop_delay_name</item>
+        <item>@string/loop_action_name</item>
+    </string-array>
+    <string-array name="LoopDelayItemList">
+        <item>@string/loop_delay_before</item>
+        <item>@string/loop_delay_after</item>
+    </string-array>
+    <string-array name="LoopActionItemList">
+        <item>@string/loop_action_suspend_time</item>
+    </string-array>
+
 </resources>

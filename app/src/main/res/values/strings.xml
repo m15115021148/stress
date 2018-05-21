@@ -9,6 +9,11 @@
     <string name="stop">Stop</string>
     <string name="test_will_tag">Test will start in %1$d secs</string>
     <string name="action_will_tag">Action will execute in %1$d secs</string>
+    <string name="dialog_title">Warm Prompt</string>
+    <string name="sure">Sure</string>
+    <string name="cancel">Cancel</string>
+    <string name="loop_input_flag">Please enter time</string>
+    <string name="loop_input_flag1">Time cannot be 0</string>
 
     <!--Menu-->
     <string name="menu_settings">Settings</string>
@@ -29,5 +34,17 @@
     <string name="main_reader">Reader</string>
     <string name="main_vibrator">Vibrator</string>
     <string name="main_camera">Camera</string>
+
+    <!--Settings-->
+    <string name="settings_loop">Test Loop</string>
+    <string name="settings_hardware">Hardware Test</string>
+    <string name="settings_log">Log</string>
+
+    <!--loop-->
+    <string name="loop_delay_name">DELAY</string>
+    <string name="loop_delay_before">Delay before Hardware Test</string>
+    <string name="loop_delay_after">Delay after Hardware Test</string>
+    <string name="loop_action_name">LOOP ACTION</string>
+    <string name="loop_action_suspend_time">Suspend time</string>
 
 </resources>

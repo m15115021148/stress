@@ -24,6 +24,7 @@ import com.meigsmart.slb767_stress.adapter.MainAdapter;
 import com.meigsmart.slb767_stress.adapter.MenuAdapter;
 import com.meigsmart.slb767_stress.application.MyApplication;
 import com.meigsmart.slb767_stress.config.Const;
+import com.meigsmart.slb767_stress.log.LogUtil;
 import com.meigsmart.slb767_stress.model.TypeModel;
 
 import java.util.List;
@@ -61,8 +62,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     public TextView mFlag;
     @BindView(R.id.title)
     public TextView mTitle;
-    private int mTestTime = 3;
-    private int mActionTime = 3;
+    private int delayBeforeTime = 3;
+    private int delayAfterTime = 3;
+    private int suspendTime = 5;
     private static final int START = 0x001;
     private static final int STOP = 0x002;
     private static final int CANCEL = 0x003;
@@ -70,6 +72,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     private static final int TIMER_SECOND = 0x005;
     private static final int TIMER_FINISH = 0x006;
     private int mTestCurrCount = 1;
+    private CustomTestTimer mTestTimer ;
+    private CustomActionTimer mActionTimer;
 
     @Override
     protected int getLayoutId() {
@@ -81,6 +85,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         mContext = this;
         super.startBlockKeys = true;
         mMenu.setOnClickListener(this);
+        mMenu.setVisibility(View.VISIBLE);
         mClose.setOnClickListener(this);
         mStart.setOnClickListener(this);
 
@@ -90,6 +95,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        delayBeforeTime = getResources().getInteger(R.integer.settings_loop_delay_before_hardware_time);
+        delayAfterTime = getResources().getInteger(R.integer.settings_loop_delay_after_hardware_time);
+        suspendTime = getResources().getInteger(R.integer.settings_loop_action_suspend_time);
+
+        if (isPreferencesData(Const.LOOP_DELAY_BEFORE_TIME))delayBeforeTime = getPreferencesData(Const.LOOP_DELAY_BEFORE_TIME);
+        if (isPreferencesData(Const.LOOP_DELAY_AFTER_TIME))delayAfterTime = getPreferencesData(Const.LOOP_DELAY_AFTER_TIME);
+        if (isPreferencesData(Const.LOOP_SUSPEND_TIME))suspendTime = getPreferencesData(Const.LOOP_SUSPEND_TIME);
+
+        LogUtil.w("delayBeforeTime:"+delayBeforeTime+"\ndelayAfterTime:"+delayAfterTime+"\nsuspendTime:"+suspendTime);
+
+        mTestTimer = new CustomTestTimer(1000*(delayBeforeTime+1), 1000);
+        mActionTimer = new CustomActionTimer(1000*(delayAfterTime+1), 1000);
+    }
+
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler(){
         @Override
@@ -97,14 +119,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
             super.handleMessage(msg);
             switch (msg.what){
                 case START:
-                    mTitle.setText(String.format(getResources().getString(R.string.app_test_number),mTestCurrCount));
+                    mSpinner.setEnabled(false);
                     startTimer(mTestTimer);
+                    mTitle.setText(String.format(getResources().getString(R.string.app_test_number),mTestCurrCount));
                     break;
                 case STOP:
+                    mSpinner.setEnabled(true);
                     cancelTimer(mTestTimer);
                     cancelTimer(mActionTimer);
                     mTitle.setText(R.string.app_name);
                     mTestCurrCount = 1;
+                    mHandler.removeMessages(TIMER_FINISH);
                     break;
                 case CANCEL:
                     break;
@@ -113,8 +138,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
                     break;
                 case TIMER_SECOND:
                     mTestCurrCount++;
-                    mTitle.setText(String.format(getResources().getString(R.string.app_test_number),mTestCurrCount));
                     startTimer(mTestTimer);
+                    mTitle.setText(String.format(getResources().getString(R.string.app_test_number),mTestCurrCount));
                     break;
                 case TIMER_FINISH:
                     startTimer(mActionTimer);
@@ -124,7 +149,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     };
 
     private void startTestFunction(){
-        mHandler.sendEmptyMessageDelayed(TIMER_FINISH,5000);
+        mHandler.sendEmptyMessageDelayed(TIMER_FINISH,1000*suspendTime);
     }
 
     @Override
@@ -180,7 +205,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mMainAdapter = new MainAdapter(this,this);
         mRecyclerView.setAdapter(mMainAdapter);
-        mMainAdapter.setData(getData(mMainList,mMainConfigList,null));
+        mMainAdapter.setData(getData(mMainList, mMainConfigList, null));
+        if (!isSelectAll()){
+            mStart.setSelected(true);
+            mStart.setEnabled(false);
+        }
+    }
+
+    private boolean isSelectAll(){
+        for (TypeModel model:mMainAdapter.getData()){
+            if (model.getType() == 1){
+                return true;
+            }
+        }
+        return false;
     }
 
     private void initSpinner(){
@@ -270,10 +308,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         }else {
             mMainAdapter.getData().get(position).setType(0);
         }
+        mStart.setSelected(false);
+        mStart.setEnabled(true);
+        if (!isSelectAll()){
+            mStart.setSelected(true);
+            mStart.setEnabled(false);
+        }
         mMainAdapter.notifyDataSetChanged();
     }
 
-    private CountDownTimer mTestTimer = new CountDownTimer(1000*(mTestTime+1), 1000) {
+    private class CustomTestTimer extends CountDownTimer{
+
+        public CustomTestTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
         @Override
         public void onTick(long l) {
             mFlag.setText(String.format(getResources().getString(R.string.test_will_tag), l / 1000));
@@ -284,9 +333,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
             cancelTimer(mTestTimer);
             mHandler.sendEmptyMessage(TIMER_FIRST);
         }
-    };
+    }
 
-    private CountDownTimer mActionTimer = new CountDownTimer(1000*(mActionTime+1), 1000) {
+    private class CustomActionTimer extends CustomTestTimer{
+
+        public CustomActionTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
         @Override
         public void onTick(long l) {
             mFlag.setText(String.format(getResources().getString(R.string.action_will_tag), l / 1000));
@@ -297,6 +351,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
             cancelTimer(mActionTimer);
             mHandler.sendEmptyMessage(TIMER_SECOND);
         }
-    };
+
+    }
 
 }

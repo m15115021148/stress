@@ -18,6 +18,7 @@ import com.meigsmart.slb767_stress.R;
 import com.meigsmart.slb767_stress.application.MyApplication;
 import com.meigsmart.slb767_stress.db.FunctionBean;
 import com.meigsmart.slb767_stress.model.TypeModel;
+import com.meigsmart.slb767_stress.util.PreferencesUtil;
 import com.meigsmart.slb767_stress.util.ToastUtil;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected static final String TAG_ESC_ACTIVITY = "com.broader.esc";
     private MyBroaderEsc receiver;//广播
     private Unbinder butterKnife;//取消绑定
-    protected boolean startBlockKeys = true;
+    protected boolean startBlockKeys = false;
     protected boolean isStartTest = false;//start test
     private PowerManager.WakeLock wakeLock = null;
     protected String mName = "";
@@ -66,6 +67,20 @@ public abstract class BaseActivity extends AppCompatActivity {
                 finish();
             }
         }
+    }
+
+    protected List<TypeModel> getData(String[] array,Class[] cls){
+        List<TypeModel> list = new ArrayList<>();
+        for (int i=0;i<array.length;i++){
+            TypeModel model = new TypeModel();
+            model.setId(i);
+            model.setName(array[i]);
+            model.setType(0);
+            model.setItemType(0);
+            if (cls!=null)model.setCls(cls[i]);
+            list.add(model);
+        }
+        return list;
     }
 
     protected List<TypeModel> getData(String[] array, int[] ids, Class[] cls){
@@ -109,13 +124,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void startActivity(TypeModel model){
-        if (model.getCls().equals(Class.class)){
+        if (model.getCls()!=null && model.getCls().equals(Class.class)){
             ToastUtil.showBottomShort(getResources().getString(R.string.to_be_developed));
             return;
         }
         if (model.getCls() != null){
             Intent intent = new Intent(this,model.getCls());
-            intent.putExtra("fatherName",this.mName);
             intent.putExtra("name",model.getName());
             startActivityForResult(intent,1111);
         }
@@ -166,6 +180,18 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected List<FunctionBean> getAllData(){
         return MyApplication.getInstance().mDb.getAllData();
+    }
+
+    protected boolean isPreferencesData(String key){
+        return PreferencesUtil.getIntegerData(this,key)!=0;
+    }
+
+    protected void setPreferenceData(String key,int values){
+        PreferencesUtil.setIntegerData(this,key,values);
+    }
+
+    protected int getPreferencesData(String key){
+        return PreferencesUtil.getIntegerData(this,key);
     }
 
     private void acquireWakeLock() {

@@ -14,4 +14,9 @@
     <integer name="main_default_config_vibrator">1</integer>
     <integer name="main_default_config_camera">1</integer>
 
+
+    <integer name="settings_loop_delay_before_hardware_time">3</integer>
+    <integer name="settings_loop_delay_after_hardware_time">3</integer>
+    <integer name="settings_loop_action_suspend_time">5</integer>
+
 </resources>
