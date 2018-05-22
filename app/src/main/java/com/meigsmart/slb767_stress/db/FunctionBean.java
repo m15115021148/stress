@@ -5,18 +5,10 @@ package com.meigsmart.slb767_stress.db;
  */
 public class FunctionBean {
     private int id;
-    private String fatherName;
-    private String subclassName;
+    private String sName;
     private int results;//0 unTest ; 1  failure ; 2 success
     private String reason;//test reason
-
-    public String getReason() {
-        return reason;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
+    private int sSelect;//0 unselect ;  1 select;
 
     public int getId() {
         return id;
@@ -26,20 +18,12 @@ public class FunctionBean {
         this.id = id;
     }
 
-    public String getFatherName() {
-        return fatherName;
+    public String getsName() {
+        return sName;
     }
 
-    public void setFatherName(String fatherName) {
-        this.fatherName = fatherName;
-    }
-
-    public String getSubclassName() {
-        return subclassName;
-    }
-
-    public void setSubclassName(String subclassName) {
-        this.subclassName = subclassName;
+    public void setsName(String sName) {
+        this.sName = sName;
     }
 
     public int getResults() {
@@ -50,8 +34,19 @@ public class FunctionBean {
         this.results = results;
     }
 
-    @Override
-    public String toString() {
-        return "{\nid:"+getId()+"\nfatherName:"+getFatherName()+"\nsubName:"+getSubclassName()+"\nresults:"+getResults()+"\n}";
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public int getsSelect() {
+        return sSelect;
+    }
+
+    public void setsSelect(int sSelect) {
+        this.sSelect = sSelect;
     }
 }

@@ -10,8 +10,8 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_FUNCTION = "create table " + FunctionDao.TABLE + " ("
             + FunctionDao.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + FunctionDao.FATHER_NAME + " TEXT, "
-            + FunctionDao.SUB_NAME + " TEXT, "
+            + FunctionDao.NAME + " TEXT, "
+            + FunctionDao.SELECT + " int, "
             + FunctionDao.REASON + " TEXT, "
             + FunctionDao.RESULTS + " int)";
 

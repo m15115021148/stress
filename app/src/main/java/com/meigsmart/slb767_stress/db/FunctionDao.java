@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +16,12 @@ import java.util.List;
 public class FunctionDao {
     private DBOpenHelper locationHelper;
     private SQLiteDatabase locationDb;
-    public static String TABLE = "function";
+    public static String TABLE = "STRESS";
     public static String ID = "id";
-    public static String FATHER_NAME = "fatherName";
-    public static String SUB_NAME = "subclassName";
+    public static String NAME = "sName";
     public static String RESULTS = "results";
     public static String REASON = "reason";
+    public static String SELECT = "sSelect";
 
     public FunctionDao(Context context) {
         locationHelper = new DBOpenHelper(context);
@@ -35,8 +36,8 @@ public class FunctionDao {
         locationDb = locationHelper.getReadableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(FATHER_NAME, bean.getFatherName());
-        values.put(SUB_NAME, bean.getSubclassName());
+        values.put(NAME, bean.getsName());
+        values.put(SELECT, bean.getsSelect());
         values.put(RESULTS, bean.getResults());
         values.put(REASON,bean.getReason());
 
@@ -47,10 +48,10 @@ public class FunctionDao {
     /**
      * 删除指定记录
      */
-    public void delete(String fatherName, String subName) {
+    public void delete(String name) {
         locationDb = locationHelper.getReadableDatabase();
         if (locationDb.isOpen())
-            locationDb.delete(TABLE, FATHER_NAME + "=? and " + SUB_NAME + "=? ", new String[]{fatherName, subName});
+            locationDb.delete(TABLE, NAME + "=?", new String[]{name});
         locationDb.close();
     }
 
@@ -67,38 +68,50 @@ public class FunctionDao {
     /**
      * 更新数据
      */
-    public void update(String fatherName, String subName, int result,String reason) {
+    public void update(String name,int select,String reason) {
         locationDb = locationHelper.getReadableDatabase();
         ContentValues values = new ContentValues();
-        values.put(RESULTS, result);
-        values.put(REASON,reason);
+        values.put(SELECT, select);
+        if (!TextUtils.isEmpty(reason))values.put(REASON,reason);
         if (locationDb.isOpen())
-            locationDb.update(TABLE, values, FATHER_NAME + "=? and " + SUB_NAME + "=? ", new String[]{fatherName, subName});
+            locationDb.update(TABLE, values, NAME + "=?", new String[]{name});
         locationDb.close();
     }
 
     /**
-     * 查询记录  subName
+     * 重置
+     */
+    public void reset() {
+        locationDb = locationHelper.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(SELECT, 0);
+        if (locationDb.isOpen())
+            locationDb.update(TABLE, values, null, null);
+        locationDb.close();
+    }
+
+    /**
+     * 查询记录
      *
      * @return
      */
-    public FunctionBean getSubData(String fatherName, String subName) {
+    public FunctionBean getData(String name) {
         FunctionBean bean = new FunctionBean();
 
-        String sql = "select * from " + TABLE + " where "+ FATHER_NAME + "=? and " + SUB_NAME + "=? ";
+        String sql = "select * from " + TABLE + " where "+ NAME + "=? ";
         locationDb = locationHelper.getReadableDatabase();
-        Cursor cursor = locationDb.rawQuery(sql, new String[]{fatherName , subName});
+        Cursor cursor = locationDb.rawQuery(sql, new String[]{name});
 
         while (cursor.moveToNext()) {
             int id = cursor.getInt(cursor.getColumnIndex(ID));
-            String fName = cursor.getString(cursor.getColumnIndex(FATHER_NAME));
-            String sName = cursor.getString(cursor.getColumnIndex(SUB_NAME));
+            String sName = cursor.getString(cursor.getColumnIndex(NAME));
             int result = cursor.getInt(cursor.getColumnIndex(RESULTS));
             String reason = cursor.getString(cursor.getColumnIndex(REASON));
+            int select = cursor.getInt(cursor.getColumnIndex(SELECT));
 
             bean.setId(id);
-            bean.setFatherName(fName);
-            bean.setSubclassName(sName);
+            bean.setsName(sName);
+            bean.setsSelect(select);
             bean.setResults(result);
             bean.setReason(reason);
 
@@ -107,39 +120,6 @@ public class FunctionDao {
         //关闭数据库
         locationDb.close();
         return bean;
-    }
-
-    /**
-     * 查询记录  fatherName
-     *
-     * @return
-     */
-    public List<FunctionBean> getFatherData(String fatherName) {
-        List<FunctionBean> dataList = new ArrayList<>();
-
-        String sql = "select * from " + TABLE + " where "+ FATHER_NAME + "=? ";
-        locationDb = locationHelper.getReadableDatabase();
-        Cursor cursor = locationDb.rawQuery(sql, new String[]{fatherName});
-
-        while (cursor.moveToNext()) {
-            int id = cursor.getInt(cursor.getColumnIndex(ID));
-            String fName = cursor.getString(cursor.getColumnIndex(FATHER_NAME));
-            String sName = cursor.getString(cursor.getColumnIndex(SUB_NAME));
-            int result = cursor.getInt(cursor.getColumnIndex(RESULTS));
-            String reason = cursor.getString(cursor.getColumnIndex(REASON));
-
-            FunctionBean bean = new FunctionBean();
-            bean.setId(id);
-            bean.setFatherName(fName);
-            bean.setSubclassName(sName);
-            bean.setResults(result);
-            bean.setReason(reason);
-
-            dataList.add(bean);
-        }
-        cursor.close();
-        locationDb.close();
-        return dataList;
     }
 
     /**
@@ -156,15 +136,15 @@ public class FunctionDao {
 
         while (cursor.moveToNext()) {
             int id = cursor.getInt(cursor.getColumnIndex(ID));
-            String fName = cursor.getString(cursor.getColumnIndex(FATHER_NAME));
-            String sName = cursor.getString(cursor.getColumnIndex(SUB_NAME));
+            String sName = cursor.getString(cursor.getColumnIndex(NAME));
             int result = cursor.getInt(cursor.getColumnIndex(RESULTS));
             String reason = cursor.getString(cursor.getColumnIndex(REASON));
+            int select = cursor.getInt(cursor.getColumnIndex(SELECT));
 
             FunctionBean bean = new FunctionBean();
             bean.setId(id);
-            bean.setFatherName(fName);
-            bean.setSubclassName(sName);
+            bean.setsName(sName);
+            bean.setsSelect(select);
             bean.setResults(result);
             bean.setReason(reason);
 

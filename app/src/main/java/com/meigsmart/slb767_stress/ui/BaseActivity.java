@@ -36,9 +36,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     private PowerManager.WakeLock wakeLock = null;
     protected String mName = "";
     protected List<FunctionBean> mList = new ArrayList<>();
-    protected int SUCCESS = 2;
-    protected int FAILURE = 1;
-    protected int NOTEST = 0;
+    protected int SELECT = 1;
+    protected int UNSELECT = 0;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,11 +105,11 @@ public abstract class BaseActivity extends AppCompatActivity {
                 TypeModel model = new TypeModel();
                 model.setId(i);
                 model.setName(array[i]);
-                model.setCls(cls[i]);
+                if (cls!=null)model.setCls(cls[i]);
                 if ( f!=null && f.size()>0){
                     for (FunctionBean bean : f){
-                        if (array[i].equals(bean.getSubclassName())){
-                            model.setType(bean.getResults());
+                        if (array[i].equals(bean.getsName())){
+                            model.setType(bean.getsSelect());
                             break;
                         }
                     }
@@ -149,33 +148,33 @@ public abstract class BaseActivity extends AppCompatActivity {
         handler.sendMessageDelayed(msg,2000);
     }
 
-    protected void addData(String fatherName,String subName){
-        FunctionBean sb = getSubData(fatherName, subName);
-        if (sb!=null && !TextUtils.isEmpty(sb.getSubclassName()) && !TextUtils.isEmpty(sb.getFatherName()))return;
+    protected void addData(String name){
+        FunctionBean sb = getData(name);
+        if (sb!=null && !TextUtils.isEmpty(sb.getsName()))return;
 
         FunctionBean bean = new FunctionBean();
-        bean.setFatherName(fatherName);
-        bean.setSubclassName(subName);
+        bean.setsName(name);
+        bean.setsSelect(0);
         bean.setResults(0);
         bean.setReason("NOTEST");
 
         MyApplication.getInstance().mDb.addData(bean);
     }
 
-    protected void updateData(String fatherName, String subName, int result){
-        MyApplication.getInstance().mDb.update(fatherName,subName,result,"");
+    protected void resetData(){
+        MyApplication.getInstance().mDb.reset();
     }
 
-    protected void updateData(String fatherName, String subName, int result,String reason){
-        MyApplication.getInstance().mDb.update(fatherName,subName,result,reason);
+    protected void update(String name,int select){
+        MyApplication.getInstance().mDb.update(name,select,null);
     }
 
-    protected FunctionBean getSubData(String fatherName, String subName){
-        return MyApplication.getInstance().mDb.getSubData(fatherName, subName);
+    protected void update(String name,int select,String reason){
+        MyApplication.getInstance().mDb.update(name,select,reason);
     }
 
-    protected List<FunctionBean> getFatherData(String fatherName){
-        return MyApplication.getInstance().mDb.getFatherData(fatherName);
+    protected FunctionBean getData(String name){
+        return MyApplication.getInstance().mDb.getData(name);
     }
 
     protected List<FunctionBean> getAllData(){

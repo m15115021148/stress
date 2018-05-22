@@ -1,6 +1,7 @@
 package com.meigsmart.slb767_stress.ui;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
@@ -26,6 +28,7 @@ import com.meigsmart.slb767_stress.application.MyApplication;
 import com.meigsmart.slb767_stress.config.Const;
 import com.meigsmart.slb767_stress.log.LogUtil;
 import com.meigsmart.slb767_stress.model.TypeModel;
+import com.meigsmart.slb767_stress.util.DialogUtil;
 
 import java.util.List;
 
@@ -74,6 +77,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     private int mTestCurrCount = 1;
     private CustomTestTimer mTestTimer ;
     private CustomActionTimer mActionTimer;
+    private View dialog;
 
     @Override
     protected int getLayoutId() {
@@ -205,10 +209,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mMainAdapter = new MainAdapter(this,this);
         mRecyclerView.setAdapter(mMainAdapter);
-        mMainAdapter.setData(getData(mMainList, mMainConfigList, null));
+        List<TypeModel> data = getData(mMainList, mMainConfigList, null);
+        createDBData(data);
+        mMainAdapter.setData(getData(mMainList, mMainConfigList, null,getAllData()));
         if (!isSelectAll()){
             mStart.setSelected(true);
             mStart.setEnabled(false);
+        }
+    }
+
+    private void createDBData(List<TypeModel> list){
+        for (TypeModel m: list){
+            addData(m.getName());
         }
     }
 
@@ -266,7 +278,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void onItemClick(int position) {//popupWindow item click
         mPop.dismiss();
-        startActivity(mMenuAdapter.getData().get(position));
+        if (position == 0){
+            startActivity(mMenuAdapter.getData().get(position));
+        }else if (position == 1){
+            dialog = DialogUtil.customPromptDialog(this,
+                    mMenuAdapter.getData().get(position).getName(),
+                    getResources().getString(R.string.sure),
+                    getResources().getString(R.string.cancel),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            resetData();
+                            mMainAdapter.setData(getData(mMainList, mMainConfigList, null,getAllData()));
+                            mMainAdapter.notifyDataSetChanged();
+                        }
+                    },null);
+            TextView tv= (TextView) dialog.findViewById(R.id.dialog_tv_txt);
+            tv.setText(R.string.reset_flag);
+        }
     }
 
     @Override
@@ -305,8 +334,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     public void onMainItemListener(int position) {
         if (mMainAdapter.getData().get(position).getType() == 0){
             mMainAdapter.getData().get(position).setType(1);
+            update(mMainAdapter.getData().get(position).getName(),SELECT);
         }else {
             mMainAdapter.getData().get(position).setType(0);
+            update(mMainAdapter.getData().get(position).getName(),UNSELECT);
         }
         mStart.setSelected(false);
         mStart.setEnabled(true);

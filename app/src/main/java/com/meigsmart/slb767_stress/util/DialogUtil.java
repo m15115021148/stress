@@ -77,11 +77,11 @@ public class DialogUtil {
 	 *            取消事件
 	 * @return 返回输入对话框的view
 	 */
-	public static View customInputDialog(final Context context, String title,String btOkName,
+	public static View customInputDialog(Context context, String title,String btOkName,
 										 String btCancelName, DialogInterface.OnClickListener pListener,
 										 DialogInterface.OnClickListener nListener) {
 	    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		final View view = LayoutInflater.from(context).inflate(
+		View view = LayoutInflater.from(context).inflate(
 				R.layout.custom_input_dialog, null);
 		view.findViewById(R.id.dialog_et_txt).setVisibility(View.VISIBLE);
         builder.setView(view);
@@ -139,17 +139,20 @@ public class DialogUtil {
 	 *            取消事件
 	 * @return 返回提示框的view
 	 */
-	public static View customPromptDialog(Context context, String btOkName,
+	public static View customPromptDialog(Context context,String title, String btOkName,
 			String btCancleName, DialogInterface.OnClickListener pListener,
 			DialogInterface.OnClickListener nListener) {
 		AlertDialog.Builder buidler = new AlertDialog.Builder(context);
 		View view = LayoutInflater.from(context).inflate(
 				R.layout.custom_input_dialog, null);
 		view.findViewById(R.id.dialog_tv_txt).setVisibility(View.VISIBLE);
+		if(!TextUtils.isEmpty(title)){
+			TextView textView=(TextView)view.findViewById(R.id.dialog_title);
+			textView.setText(title);
+		}
 		buidler.setView(view);
 		buidler.setPositiveButton(btOkName, pListener);
 		buidler.setNegativeButton(btCancleName, nListener);
-		buidler.setCancelable(false);//点击不取消
 		buidler.create().show();
 		return view;
 	}
