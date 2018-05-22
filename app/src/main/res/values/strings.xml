@@ -51,4 +51,13 @@
     <string name="hardware_detection">Detection</string>
     <string name="hardware_function">Function</string>
 
+    <!--Detection-->
+    <string name="detection_retry_times">Retry times</string>
+    <string name="detection_retry_delay">Retry delay</string>
+    <string name="detection_action">Action of HW Failure</string>
+
+    <string name="detection_action_run_hardware_activate">RUN Test after Hardware activate</string>
+    <string name="detection_action_run_retry_times_reach">RUN Test after Retry Times Reach</string>
+    <string name="detection_action_stop_retry_times_reach">STOP Test after Retry Times Reach</string>
+
 </resources>

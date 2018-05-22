@@ -8,6 +8,9 @@ import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.meigsmart.slb767_stress.R;
@@ -66,7 +69,7 @@ public class DialogUtil {
 	 *            本类
 	 * @param btOkName
 	 *            确定名称
-	 * @param btCancleName
+	 * @param btCancelName
 	 *            取消名称
 	 * @param pListener
 	 *            确定事件
@@ -74,21 +77,21 @@ public class DialogUtil {
 	 *            取消事件
 	 * @return 返回输入对话框的view
 	 */
-	public static View customInputDialog(Context context, String title,String btOkName,
-										 String btCancleName, DialogInterface.OnClickListener pListener,
+	public static View customInputDialog(final Context context, String title,String btOkName,
+										 String btCancelName, DialogInterface.OnClickListener pListener,
 										 DialogInterface.OnClickListener nListener) {
-		Builder buidler = new Builder(context);
-		View view = LayoutInflater.from(context).inflate(
+	    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		final View view = LayoutInflater.from(context).inflate(
 				R.layout.custom_input_dialog, null);
 		view.findViewById(R.id.dialog_et_txt).setVisibility(View.VISIBLE);
-		buidler.setView(view);
+        builder.setView(view);
 		if(!TextUtils.isEmpty(title)){
 			TextView textView=(TextView)view.findViewById(R.id.dialog_title);
 			textView.setText(title);
 		}
-		buidler.setPositiveButton(btOkName, pListener);
-		buidler.setNegativeButton(btCancleName, nListener);
-		buidler.create().show();
+		builder.setPositiveButton(btOkName, pListener);
+		builder.setNegativeButton(btCancelName, nListener);
+        builder.create().show();
 		return view;
 	}
 

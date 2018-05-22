@@ -68,4 +68,16 @@
         <item>@string/hardware_function</item>
     </string-array>
 
+    <!--Detection-->
+    <string-array name="DetectionList">
+        <item>@string/detection_retry_times</item>
+        <item>@string/detection_retry_delay</item>
+        <item>@string/detection_action</item>
+    </string-array>
+    <string-array name="DetectionActionList">
+        <item>@string/detection_action_run_hardware_activate</item>
+        <item>@string/detection_action_run_retry_times_reach</item>
+        <item>@string/detection_action_stop_retry_times_reach</item>
+    </string-array>
+
 </resources>

@@ -1,11 +1,17 @@
 package com.meigsmart.slb767_stress.ui;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -139,5 +145,14 @@ public class TestLoopActivity extends BaseActivity implements LoopAdapter.OnLoop
         );
         mDialogEt = (EditText) dialog.findViewById(R.id.dialog_et_txt);
         mDialogEt.setText(String.valueOf(mList.get(groupPos).getGroupItem().getList().get(subPosition).getTime()));
+//        mDialogEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                assert imm != null;
+//                imm.showSoftInput(mDialogEt, InputMethodManager.SHOW_IMPLICIT);
+//            }
+//        });
+        mDialogEt.requestFocus();
     }
 }

@@ -2,8 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusableInTouchMode="true"
-    android:focusable="true"
     android:orientation="vertical">
 
     <TextView
@@ -25,14 +23,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@null"
-        android:fontFamily="sans-serif"
-        android:freezesText="true"
         android:inputType="number"
         android:padding="10dp"
-        android:scrollHorizontally="true"
         android:singleLine="true"
         android:textColor="#333333"
-        android:textColorHint="#dedede"
         android:textSize="17sp"
         android:textStyle="normal"
         android:visibility="gone" />

@@ -19,4 +19,8 @@
     <integer name="settings_loop_delay_after_hardware_time">3</integer>
     <integer name="settings_loop_action_suspend_time">5</integer>
 
+    <!--Detection-->
+    <integer name="settings_detection_default_config_retry_times">3</integer>
+    <integer name="settings_detection_default_config_retry_delay">3</integer>
+
 </resources>
