@@ -102,6 +102,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     @Override
     protected void onResume() {
         super.onResume();
+        setRecyclerViewData();
         delayBeforeTime = getResources().getInteger(R.integer.settings_loop_delay_before_hardware_time);
         delayAfterTime = getResources().getInteger(R.integer.settings_loop_delay_after_hardware_time);
         suspendTime = getResources().getInteger(R.integer.settings_loop_action_suspend_time);
@@ -114,6 +115,38 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
 
         mTestTimer = new CustomTestTimer(1000*(delayBeforeTime+1), 1000);
         mActionTimer = new CustomActionTimer(1000*(delayAfterTime+1), 1000);
+    }
+
+    @Override
+    protected void onDestroy() {
+        Intent intent = new Intent();
+        intent.setAction(BaseActivity.TAG_ESC_ACTIVITY);
+        sendBroadcast(intent);
+        System.exit(0);
+        finish();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        resetStatus();
+    }
+
+    private void resetStatus(){
+        isStarting = false;
+        mStart.setSelected(false);
+        mStart.setEnabled(true);
+        mStart.setText(R.string.start);
+        mClose.setSelected(false);
+        mClose.setEnabled(true);
+        mSpinner.setEnabled(true);
+        cancelTimer(mTestTimer);
+        cancelTimer(mActionTimer);
+        mTitle.setText(R.string.app_name);
+        mTestCurrCount = 1;
+        mHandler.removeMessages(TIMER_FINISH);
+        setRecyclerViewData();
     }
 
     @SuppressLint("HandlerLeak")
@@ -154,16 +187,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
 
     private void startTestFunction(){
         mHandler.sendEmptyMessageDelayed(TIMER_FINISH,1000*suspendTime);
-    }
-
-    @Override
-    protected void onDestroy() {
-        Intent intent = new Intent();
-        intent.setAction(BaseActivity.TAG_ESC_ACTIVITY);
-        sendBroadcast(intent);
-        System.exit(0);
-        finish();
-        super.onDestroy();
     }
 
     @Override
@@ -211,11 +234,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         mRecyclerView.setAdapter(mMainAdapter);
         List<TypeModel> data = getData(mMainList, mMainConfigList, null);
         createDBData(data);
+    }
+
+    private void setRecyclerViewData(){
         mMainAdapter.setData(getData(mMainList, mMainConfigList, null,getAllData()));
         if (!isSelectAll()){
             mStart.setSelected(true);
             mStart.setEnabled(false);
         }
+        mMainAdapter.notifyDataSetChanged();
     }
 
     private void createDBData(List<TypeModel> list){
@@ -279,6 +306,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     public void onItemClick(int position) {//popupWindow item click
         mPop.dismiss();
         if (position == 0){
+            resetStatus();
             startActivity(mMenuAdapter.getData().get(position));
         }else if (position == 1){
             dialog = DialogUtil.customPromptDialog(this,
@@ -289,8 +317,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             resetData();
-                            mMainAdapter.setData(getData(mMainList, mMainConfigList, null,getAllData()));
-                            mMainAdapter.notifyDataSetChanged();
+                            resetStatus();
                         }
                     },null);
             TextView tv= (TextView) dialog.findViewById(R.id.dialog_tv_txt);
