@@ -19,6 +19,7 @@ public class Const {
     public static final String DETECTION_RETRY_TIMES = "Retry times";
     public static final String DETECTION_RETRY_DELAY = "Retry delay";
     public static final String DETECTION_ACTION = "detection action";
+    public static final String LOG_BATTERY_INFO = "Log Battery Info";
 
     public static Class[] menuList = {
             SettingsActivity.class,

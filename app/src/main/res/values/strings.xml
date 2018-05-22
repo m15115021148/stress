@@ -14,6 +14,7 @@
     <string name="cancel">Cancel</string>
     <string name="loop_input_flag">Please enter time</string>
     <string name="loop_input_flag1">Time cannot be 0</string>
+    <string name="log_battery_info">Battery Info</string>
 
     <!--Menu-->
     <string name="menu_settings">Settings</string>
