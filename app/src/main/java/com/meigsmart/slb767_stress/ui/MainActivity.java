@@ -1,6 +1,7 @@
 package com.meigsmart.slb767_stress.ui;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -8,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Vibrator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
@@ -15,7 +17,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
@@ -28,6 +29,7 @@ import com.meigsmart.slb767_stress.application.MyApplication;
 import com.meigsmart.slb767_stress.config.Const;
 import com.meigsmart.slb767_stress.log.LogUtil;
 import com.meigsmart.slb767_stress.model.TypeModel;
+import com.meigsmart.slb767_stress.test.BluetoothFunction;
 import com.meigsmart.slb767_stress.util.DialogUtil;
 import com.meigsmart.slb767_stress.util.PreferencesUtil;
 
@@ -80,6 +82,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     private CustomActionTimer mActionTimer;
     private View dialog;
     private int mLoopActionType = 0;
+    private Vibrator mVibrator;
+    private static final long V_TIME = 12 * 30 * 24 * 60 * 60 * 1000;
+    private BluetoothFunction mBlueTest;
 
     @Override
     protected int getLayoutId() {
@@ -95,6 +100,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         mClose.setOnClickListener(this);
         mStart.setOnClickListener(this);
 
+        init();
         initSpinner();
         initMainRecyclerView();
         initPopupWindow();
@@ -163,12 +169,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
                     mTitle.setText(String.format(getResources().getString(R.string.app_test_number),mTestCurrCount));
                     break;
                 case STOP:
-                    mSpinner.setEnabled(true);
-                    cancelTimer(mTestTimer);
-                    cancelTimer(mActionTimer);
-                    mTitle.setText(R.string.app_name);
-                    mTestCurrCount = 1;
-                    mHandler.removeMessages(TIMER_FINISH);
+                    resetStatus();
+                    mVibrator.cancel();
+                    mBlueTest.reset();
                     break;
                 case CANCEL:
                     break;
@@ -181,6 +184,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
                     mTitle.setText(String.format(getResources().getString(R.string.app_test_number),mTestCurrCount));
                     break;
                 case TIMER_FINISH:
+                    mVibrator.cancel();
+                    mBlueTest.reset();
+
                     startTimer(mActionTimer);
                     break;
             }
@@ -188,6 +194,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     };
 
     private void startTestFunction(){
+        mVibrator.vibrate(V_TIME);
+        mBlueTest.start();
+
+
         mHandler.sendEmptyMessageDelayed(TIMER_FINISH,1000*suspendTime);
     }
 
@@ -228,6 +238,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
 
             }
         }
+    }
+
+    private void init(){
+        mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        mBlueTest = new BluetoothFunction(this);
     }
 
     private void initMainRecyclerView(){

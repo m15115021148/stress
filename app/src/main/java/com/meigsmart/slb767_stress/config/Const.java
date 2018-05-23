@@ -14,8 +14,8 @@ public class Const {
     public static boolean isCanBackKey = true;
     public static final String LOOP_ACTION = "Loop Action";
     //Corresponding xml configuration
-    public static final String LOOP_DELAY_BEFORE_TIME = "Delay before Hardware Test";
-    public static final String LOOP_DELAY_AFTER_TIME = "Delay after Hardware Test";
+    public static final String LOOP_DELAY_BEFORE_TIME = "Delay before Hardware BluetoothFunction";
+    public static final String LOOP_DELAY_AFTER_TIME = "Delay after Hardware BluetoothFunction";
     public static final String LOOP_SUSPEND_TIME = "Suspend time";
     public static final String DETECTION_RETRY_TIMES = "Retry times";
     public static final String DETECTION_RETRY_DELAY = "Retry delay";
