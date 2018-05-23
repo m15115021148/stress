@@ -12,6 +12,7 @@ import com.meigsmart.slb767_stress.ui.TestLoopActivity;
  */
 public class Const {
     public static boolean isCanBackKey = true;
+
     public static final String LOOP_ACTION = "Loop Action";
     //Corresponding xml configuration
     public static final String LOOP_DELAY_BEFORE_TIME = "Delay before Hardware Test";
