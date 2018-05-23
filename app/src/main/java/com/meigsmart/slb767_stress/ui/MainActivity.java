@@ -29,6 +29,7 @@ import com.meigsmart.slb767_stress.config.Const;
 import com.meigsmart.slb767_stress.log.LogUtil;
 import com.meigsmart.slb767_stress.model.TypeModel;
 import com.meigsmart.slb767_stress.util.DialogUtil;
+import com.meigsmart.slb767_stress.util.PreferencesUtil;
 
 import java.util.List;
 
@@ -78,6 +79,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     private CustomTestTimer mTestTimer ;
     private CustomActionTimer mActionTimer;
     private View dialog;
+    private int mLoopActionType = 0;
 
     @Override
     protected int getLayoutId() {
@@ -264,10 +266,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         mSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.LoopActionList, R.layout.spinner_item);
         mSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinner.setAdapter(mSpinnerAdapter);
+        mLoopActionType = PreferencesUtil.getIntegerData(this,Const.LOOP_ACTION);
+        mSpinner.setSelection(mLoopActionType);
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                PreferencesUtil.setIntegerData(mContext,Const.LOOP_ACTION,position);
             }
 
             @Override
